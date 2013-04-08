@@ -1,0 +1,142 @@
+安装APK文件到Android模拟器
+
+　　Android手机使用的执行文件为APK格式，类似于Windows平台的exe文件。在Android模拟器中安装APK文件有多种方法，如果你是开发人员，可以通过Eclipse+ADT，使用DDMS可以传输文件。
+    大多数可以直接在Windows的cmd中操作就可以了。
+
+　　一、首先在Android SDK的Tools文件夹中找到emulator.exe文件并运行，这时Android模拟器就启动了，
+
+　　二、 将android123.apk文件复制到Android SDK的Tools目录中(点击下载Android123.apk文件)，使用cmd的cd命令定位到Android 模拟器目录Tools中，执行adb install android123.apk命令，
+	这时模拟器将会自动执行安装。
+
+　　三、在Android模拟器中可以找到我们安装好的文件-Android手机之家。
+
+　　四、 用鼠标单击这个文件就可以看到Android手机之家网站的演示程序。
+
+　　写在最后我们可以发现安装Android软件到模拟器很简单，只需要执行adb install命令就可以了，当然其实我们做的是复制文件到Android模拟器的/data/app文件夹，并创建了一个快捷方式。
+
+　　Android sdcard的使用
+
+　　(下面是在linux运行的，而且是在sdcard的镜像文件同一目录下进行操作的)
+
+　　这两天在实现播放器列表实现，其中需要使用到Sdcard，在网上收集到了一些sdcard的使用，发现几乎都是错误的，最后经过小组几个人的探讨，终于将sdcard使用成功了。
+    下面就将使用sdcard的使用步骤总结下来：
+
+　　我们在网上会发现，很多人都是这样来操作sdcard的：
+
+　　1、首先是生成sdcard镜像文件sdcard.img或者是其他的名称。命令为：mksdcard -l sdcard capacity directory
+
+　　例如：mksdcard 1024M D:sdcard.img
+
+　　directory 指的是镜像文件存放的目录，capacity就是要创建的镜像文件的容量。这里将镜像文件放在当前目录下。
+
+　　2、之后，启动模拟器：emulator -sdcard sdcard镜像文件的目录
+
+　　例如：emulator -sdcard D:sdcard.img
+
+　　3、打开另外一个终端，输入下面命令来将资源放入到sdcard里面
+
+　　adb push source-file sdcard的镜像文件目录
+
+　　这个时候会发现这是不能成功的，会得出Read Only System 这样的错误失败提示。
+
+　　这里，来分析一下为什么会失败。
+
+　　在创建sdcard镜像文件的时候，生成的sdcard.img只是一个镜像文件，而不是一个真正的目录，所以如果要将资源文件放入到sdcard的镜像文件中，当然是错误的，而我们会发现，
+	Sdcard是Android中的存储模拟设备，类似于计算机的硬盘一样，这样我们可以向其中放入资源文件，
+
+    即可以将命令adb push <目录/audio.mp3> 的镜像文件目录
+
+　　改为adb push <目录/audio.mp3> < shell中检查是否将文件放入了sdcard中，使用命令adb> 
+
+　　以上就是sdcard存储资源的使用。
+
+　　adb命令的使用
+
+　　adb(Android Debug Bridge)是Android 提供的一个通用的调试工具，借助这个工具，我们可以管理设备或手机 模拟器 的状态 。还可以进行以下的操作：
+
+　　1、快速更新设备或手机模拟器中的代码，如应用或Android系统升级;
+
+　　2、在设备上运行shell命令;
+
+　　3、管理设备或手机模拟器上的预定端口;
+
+　　4、在设备或手机模拟器上复制或粘贴文件;
+
+　　以下为一些常用的操作：
+
+　　1、安装 应用到模拟器：
+
+　　adb install
+
+　　比较遗憾的是，Android并没有提供一个卸载 应用的命令，只能自己手动删除 ：
+
+　　adb shell
+
+　　cd /data/app
+
+　　rm app.apk
+
+　　2、进入设备或模拟器的shell：
+
+　　adb shell
+
+　　通过上面的命令，就可以进入设备或模拟器的shell环境中，在这个Linux Shell中，你可以执行各种Linux 的命令，另外如果只想执行一条shell命令，可以采用以下的方式：
+
+　　adb shell [command]
+
+　　如：adb shell dmesg会打印出内核的调试信息。
+
+　　3、发布端口：
+
+　　可以设置任意的端口号，做为主机 向模拟器或设备的请求端口。如：
+
+　　adb forward tcp:5555 tcp:8000
+
+　　4、复制文件 ：
+
+　　可向一个设备或从一个设备中复制文件，
+
+　　复制一个文件或目录到设备或模拟器上：
+
+　　adb push
+
+　　如：adb push test.txt /tmp/test.txt
+
+　　从设备或模拟器上复制一个文件或目录：
+
+　　adb pull
+
+　　如：adb pull /addroid/lib/libwebcore.so .
+
+　　5、搜索模拟器/设备的实例：
+
+　　取得当前运行的模拟器/设备的实例的列表及每个实例的状态：
+
+　　adb devices
+
+　　6、查看bug报告：
+
+　　adb bugreport
+
+　　7、记录无线通讯日志：
+
+　　一般来说，无线通讯的日志非常多，在运行时没必要去记录，但我们还是可以通过命令，设置记录：
+
+　　adb shell
+
+　　logcat -b radio
+
+　　8、获取设备的ID和序列号：
+    adb get-product
+
+　　adb get-serialno
+
+　　9、访问数据库SQLite3
+
+　　adb shell
+
+　　sqlite3
+
+　　10、通过gsm call命令可以像Android 模拟器打电话 ，除了在EclipseADT 的DDMS中通过按钮Dial外，还可以通过DDMS外壳调用gsm call命令直接拨打，我
+     们首先需要启动AndroidEmulator，然后在cmd环境下执行telnet localhost 5554 下面就可以向Android模拟器 拨号，参数为gsmcall < phoneNum> ，比如给10086打电话 为gsm call +10086
+

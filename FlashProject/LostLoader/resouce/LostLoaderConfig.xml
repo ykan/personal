@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<!-- 配置 -->
+	<configure 	loadtype="weak"
+				extenalLoaderType="true"
+				sameDomain="true"
+	/>
+	<!--安全策略文件-->
+	<policyfile>
+		<url>crossdomain.xml</url>
+	</policyfile>
+	<!-- 添加类型 -->
+	<type>
+		<loader type="tes">test::TestLoader</loader>
+	</type>
+	<!-- 资源 -->
+	<resource>
+		<data type="swf">
+			<element name="one">resouce/swf/1.swf</element>
+			<element name="two">resouce/swf/2.swf</element>
+			<element name="three">resouce/swf/3.swf</element>
+			<element name="four">resouce/swf/4.swf</element>
+			<!--<element name="five">resouce/swf/5.swf</element>
+			<element name="six">resouce/swf/6.swf</element>
+			<element name="seven">resouce/swf/7.swf</element>
+			<element name="eight">resouce/swf/8.swf</element>-->
+		</data>
+		<data type="img">
+			<element name="one">resouce/img/1.jpg</element>
+			<element name="two">resouce/img/2.jpg</element>
+			<element name="three">resouce/img/3.jpg</element>
+			<element name="four">resouce/img/4.jpg</element>
+		</data>
+		<data type="txt">
+			<element name="one">resouce/txt/1.txt</element>
+			<element name="two">resouce/txt/2.txt</element>
+			<element name="three">resouce/txt/3.txt</element>
+			<element name="four">resouce/txt/4.txt</element>
+		</data>
+		<data type="bin">
+			<element name="yukan">resouce/bin/1.doc</element>
+		</data>
+	</resource>
+	
+</data>
